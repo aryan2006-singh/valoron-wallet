@@ -61,7 +61,13 @@ export async function POST(request: Request) {
   const rawBody = JSON.stringify(payload);
   const signature = createHmac("sha256", process.env.PAYMENT_WEBHOOK_SECRET!).update(rawBody).digest("hex");
 
-  const webhookUrl = new URL("/api/webhooks/payment", request.url);
+  // Call the webhook route via localhost, not the public URL. A server
+  // fetching its own public HTTPS hostname from inside itself is a classic
+  // "hairpin" failure on platforms like Render (the request loops back
+  // through the edge proxy/TLS termination and can fail outright) --
+  // localhost avoids that network hop entirely while still exercising the
+  // real route handler and its signature verification.
+  const webhookUrl = `http://127.0.0.1:${process.env.PORT ?? 3000}/api/webhooks/payment`;
   const webhookResponse = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Signature": signature },
