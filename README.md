@@ -36,7 +36,7 @@ Run the app:
 npm run dev
 ```
 
-Open `http://localhost:3000`, log in as any demo user, and use Deposit / Send / Withdraw / Escrow. Deposits go through a real intent → signed-webhook round trip; the "pay now" step is simulated by `/api/dev/simulate-provider`, which server-side constructs and HMAC-signs the same webhook payload a real gateway would send, then posts it to the real `/api/webhooks/payment` verification path. The webhook secrets never reach the browser.
+Open `https://valoron-wallet.onrender.com`, log in as any demo user, and use Deposit / Send / Withdraw / Escrow. Deposits go through a real intent → signed-webhook round trip; the "pay now" step is simulated by `/api/dev/simulate-provider`, which server-side constructs and HMAC-signs the same webhook payload a real gateway would send, then posts it to the real `/api/webhooks/payment` verification path. The webhook secrets never reach the browser.
 
 ## Webhook / concurrency proof script
 
