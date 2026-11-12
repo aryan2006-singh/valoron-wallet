@@ -42,12 +42,16 @@ export async function POST(request: Request) {
 
   const { data: intent, error } = await supabase
     .from("payment_intents")
-    .select("id, amount_paise, user_id")
+    .select("id, amount_paise, user_id, status")
     .eq("id", intentId)
     .single();
 
   if (error || !intent || intent.user_id !== user.id) {
     return NextResponse.json({ code: "NOT_FOUND" }, { status: 404 });
+  }
+
+  if (intent.status !== "pending") {
+    return NextResponse.json({ code: "INVALID_STATUS" }, { status: 409 });
   }
 
   const payload = {
