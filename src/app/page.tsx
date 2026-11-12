@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { entryLabel, formatDate, formatRupees, friendlyError, toPaise } from "@/lib/format";
@@ -292,7 +292,7 @@ export default function Home() {
       <main className={styles.center}>
         <div className={styles.loginCard}>
           <Logo />
-          <div className={styles.orbSmall} aria-hidden />
+          <Tiles small />
           <h1 className={styles.loginTitle}>Money, moved simply.</h1>
           <p className={styles.loginSub}>A demo wallet for deposits, support payments, escrow and withdrawals.</p>
           <p className={styles.sectionLabel}>Choose a demo account</p>
@@ -347,7 +347,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <section className={styles.hero} aria-label="Balances">
-          <div className={styles.orb} aria-hidden />
+          <Tiles />
           <p className={styles.heroLabel}>Available balance</p>
           <p className={styles.heroAmount}>{formatRupees(available)}</p>
           <div className={styles.heroStats}>
@@ -486,7 +486,9 @@ export default function Home() {
 
           <section className={styles.card} aria-labelledby="escrow-heading">
             <div className={styles.cardHeader}>
-              <h2 id="escrow-heading">Escrow</h2>
+              <h2 id="escrow-heading">
+                <span className={styles.diamond} aria-hidden>◇</span>Escrow
+              </h2>
               {activeHolds.length > 0 && <span className={styles.count}>{activeHolds.length} active</span>}
             </div>
             {holds.length === 0 ? (
@@ -530,7 +532,9 @@ export default function Home() {
 
           <section className={`${styles.card} ${styles.wide}`} aria-labelledby="tx-heading">
             <div className={styles.cardHeader}>
-              <h2 id="tx-heading">Recent activity</h2>
+              <h2 id="tx-heading">
+                <span className={styles.diamond} aria-hidden>◇</span>Recent activity
+              </h2>
             </div>
             {activity.length === 0 ? (
               <p className={styles.empty}>No transactions yet. Add money to get started.</p>
@@ -566,6 +570,17 @@ export default function Home() {
 function Logo() {
   return (
     <span className={styles.logo}>valoron</span>
+  );
+}
+
+// Fanned stack of glossy tiles, pure CSS; decorative only.
+function Tiles({ small = false }: { small?: boolean }) {
+  return (
+    <div className={small ? styles.tilesSmall : styles.tiles} aria-hidden>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <span key={i} className={styles.tile} style={{ "--i": i } as CSSProperties} />
+      ))}
+    </div>
   );
 }
 

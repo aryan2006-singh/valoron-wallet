@@ -1,15 +1,20 @@
 /*
- * Valoron design tokens. One dark theme: a black canvas, white type,
- * a single lime accent, hairline borders and pill-shaped controls.
+ * Valoron design tokens. One dark theme: a black canvas, light display type,
+ * silver for actions, lime only for money coming in, hairline borders,
+ * mono uppercase micro-labels and a serif for editorial asides.
  */
 :root {
   --bg: #000000;
   --surface: #0a0a0a;
   --surface-2: #141414;
-  --text: #ffffff;
-  --muted: #8a8a8a;
+  --text: #f2f4f5;
+  --muted: #8d9496;
   --border: #1f1f1f;
   --border-strong: #333333;
+
+  --silver: #c9d0d2;
+  --silver-hover: #e3e8ea;
+  --silver-soft: rgb(201 208 210 / 0.12);
 
   --accent: #dbffad;
   --accent-hover: #e9ffcc;
@@ -29,7 +34,9 @@
   --pill: 999px;
 
   --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-editorial: var(--font-serif), Georgia, "Times New Roman", serif;
+  --font-label: var(--font-mono), ui-monospace, monospace;
 
   color-scheme: dark;
 }

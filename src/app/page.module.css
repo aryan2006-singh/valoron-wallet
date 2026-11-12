@@ -28,7 +28,7 @@
 }
 
 .tagline {
-  font-family: var(--font-display);
+  font-family: var(--font-editorial);
   font-size: 17px;
   color: var(--text);
 }
@@ -69,53 +69,80 @@
 /* ---------- Brand ---------- */
 
 .logo {
-  font-weight: 600;
-  font-size: 17px;
+  font-weight: 500;
+  font-size: 18px;
   letter-spacing: -0.03em;
   text-transform: lowercase;
 }
 
-/* ---------- Orb (the soft-lit sphere) ---------- */
+.diamond {
+  margin-right: 12px;
+  font-size: 0.6em;
+  vertical-align: 0.25em;
+  color: var(--silver);
+}
 
-.orb,
-.orbSmall {
-  border-radius: 50%;
-  background: radial-gradient(circle at 62% 30%, #d9d9d9 0%, #8c8c8c 22%, #2c2c2c 55%, #050505 78%);
-  box-shadow: inset -18px -24px 48px rgb(0 0 0 / 0.85);
-  animation: drift 14s ease-in-out infinite;
+/* ---------- Chrome tiles (decorative hero visual) ---------- */
+
+.tiles,
+.tilesSmall {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  width: clamp(200px, 34vw, 380px);
+  aspect-ratio: 1.2;
+  translate: 0 -50%;
+  perspective: 900px;
   pointer-events: none;
 }
 
-.orb {
+.tilesSmall {
+  position: relative;
+  right: auto;
+  top: auto;
+  translate: none;
+  width: 220px;
+  margin: 16px auto 0;
+}
+
+.tile {
+  --i: 0;
   position: absolute;
-  right: 6%;
-  top: 50%;
-  width: clamp(160px, 26vw, 250px);
+  left: calc(var(--i) * 15%);
+  top: calc(28% - var(--i) * 4%);
+  width: 46%;
   aspect-ratio: 1;
-  translate: 0 -50%;
+  border-radius: 16%;
+  background: linear-gradient(140deg, #f4f6f7 0%, #b9c1c4 35%, #2a2e30 70%, #0b0c0d 100%);
+  border: 1px solid rgb(255 255 255 / 0.35);
+  box-shadow:
+    inset 0 0 0 2px rgb(0 0 0 / 0.4),
+    0 0 24px rgb(201 208 210 / 0.18),
+    0 20px 40px rgb(0 0 0 / 0.8);
+  transform: rotateX(52deg) rotateZ(-38deg) translateZ(calc(var(--i) * 6px));
+  animation: float 7s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.6s);
 }
 
-.orbSmall {
-  width: 120px;
-  height: 120px;
-  margin: 28px auto 8px;
+.tile:nth-child(even) {
+  background: linear-gradient(140deg, #3a4043 0%, #111314 45%, #000 100%);
 }
 
-@keyframes drift {
+@keyframes float {
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    translate: 0 0;
   }
   50% {
-    transform: translateY(-10px) rotate(8deg);
+    translate: 0 -10px;
   }
 }
 
 @media (max-width: 600px) {
-  .orb {
-    right: -60px;
-    width: 220px;
-    opacity: 0.55;
+  .tiles {
+    right: -70px;
+    width: 240px;
+    opacity: 0.5;
   }
 }
 
@@ -133,10 +160,11 @@
 .loginTitle {
   margin-top: 12px;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 44px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  font-size: 46px;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--silver);
   text-align: center;
 }
 
@@ -149,8 +177,11 @@
 
 .sectionLabel {
   margin-top: 28px;
-  font-family: var(--font-display);
-  font-size: 16px;
+  margin-bottom: 4px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
@@ -279,41 +310,53 @@
   background: radial-gradient(120% 140% at 80% 40%, #111 0%, #000 60%);
 }
 
-.hero > *:not(.orb) {
+.hero > *:not(.tiles) {
   position: relative;
 }
 
 .heroLabel {
-  font-family: var(--font-display);
-  font-size: 18px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
 .heroAmount {
-  margin-top: 2px;
+  margin-top: 10px;
   font-family: var(--font-display);
-  font-size: clamp(52px, 11vw, 96px);
+  font-weight: 200;
+  font-size: clamp(52px, 11vw, 104px);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
+  color: var(--silver);
   font-variant-numeric: tabular-nums;
 }
 
 .heroStats {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 48px;
-  margin-top: 28px;
+  gap: 12px 0;
+  margin-top: 32px;
+}
+
+.heroStats > div {
+  min-width: 170px;
+  padding-right: 32px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-strong);
 }
 
 .heroStatLabel {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
 .heroStatValue {
-  margin-top: 2px;
-  font-size: 20px;
-  font-weight: 500;
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -336,9 +379,9 @@
 
 .cardHeader h2 {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 26px;
-  letter-spacing: -0.01em;
+  font-weight: 300;
+  font-size: 30px;
+  letter-spacing: -0.04em;
 }
 
 .count {
@@ -352,7 +395,7 @@
 .empty {
   padding: 28px 0 12px;
   text-align: center;
-  font-family: var(--font-display);
+  font-family: var(--font-editorial);
   font-size: 17px;
   color: var(--muted);
 }
@@ -372,7 +415,9 @@
   border-radius: var(--pill);
   background: transparent;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   white-space: nowrap;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
@@ -383,8 +428,8 @@
 }
 
 .tab[aria-selected="true"] {
-  background: var(--text);
-  border-color: var(--text);
+  background: var(--silver);
+  border-color: var(--silver);
   color: var(--bg);
 }
 
@@ -397,7 +442,7 @@
 }
 
 .formHint {
-  font-family: var(--font-display);
+  font-family: var(--font-editorial);
   font-size: 18px;
   line-height: 1.35;
   color: var(--text);
@@ -413,7 +458,10 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font-size: 13px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
@@ -469,15 +517,17 @@
   background: transparent;
   color: inherit;
   font-family: var(--font-display);
-  font-size: 30px;
+  font-weight: 300;
+  font-size: 28px;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   outline: none;
 }
 
 .currency {
   color: var(--muted);
-  font-family: var(--font-display);
-  font-size: 30px;
+  font-weight: 300;
+  font-size: 28px;
 }
 
 .chips {
@@ -485,6 +535,11 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: -6px;
+}
+
+.chip::before {
+  content: "◦ ";
+  color: var(--muted);
 }
 
 .chip {
@@ -542,11 +597,13 @@
   gap: 8px;
   height: 52px;
   border: 0;
-  border-radius: var(--pill);
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-size: 16px;
+  border-radius: 10px;
+  background: var(--silver);
+  color: #000;
+  font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   transition: background 0.15s, opacity 0.15s, transform 0.15s;
 }
 
@@ -556,7 +613,7 @@
 }
 
 .primaryButton:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: var(--silver-hover);
 }
 
 .primaryButton:hover:not(:disabled)::after {
@@ -586,9 +643,9 @@
 }
 
 .smallPrimary {
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--accent-ink);
+  border: 1px solid var(--silver);
+  background: var(--silver);
+  color: #000;
 }
 
 .smallSecondary {
@@ -695,7 +752,9 @@ button:disabled {
 
 .txAmount {
   font-family: var(--font-display);
+  font-weight: 300;
   font-size: 20px;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 
