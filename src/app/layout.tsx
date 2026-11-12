@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Inter_Tight, Instrument_Serif } from "next/font/google";
+import { Geist_Mono, Inter_Tight, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
 const sans = Inter_Tight({
@@ -12,15 +12,14 @@ const mono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const serif = Instrument_Serif({
+const serif = Source_Serif_4({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: "400",
 });
 
 export const metadata: Metadata = {
-  title: "Valoron Wallet",
-  description: "A demo wallet for deposits, support payments, escrow and withdrawals.",
+  title: "Valoron — a rupee wallet on a double-entry ledger",
+  description: "Add money, send support, hold funds in escrow and withdraw to UPI. Every balance is backed by a double-entry ledger.",
 };
 
 export default function RootLayout({

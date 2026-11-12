@@ -1,44 +1,53 @@
 /*
- * Valoron design tokens. One dark theme: a black canvas, light display type,
- * silver for actions, lime only for money coming in, hairline borders,
- * mono uppercase micro-labels and a serif for editorial asides.
+ * Valoron design tokens. A light, monochrome theme: white canvas, near-black
+ * ink and buttons, hairline grey borders, a bold serif for headings and green
+ * only for money coming in.
  */
 :root {
-  --bg: #000000;
-  --surface: #0a0a0a;
-  --surface-2: #141414;
-  --text: #f2f4f5;
-  --muted: #8d9496;
-  --border: #1f1f1f;
-  --border-strong: #333333;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f6f6f6;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --border: #ececec;
+  --border-strong: #dcdcdc;
 
-  --silver: #c9d0d2;
-  --silver-hover: #e3e8ea;
-  --silver-soft: rgb(201 208 210 / 0.12);
+  /* "silver" is the action colour: near-black buttons with white text. */
+  --silver: #111111;
+  --silver-hover: #2b2b2b;
+  --silver-ink: #ffffff;
+  --silver-soft: rgb(17 17 17 / 0.06);
 
-  --accent: #dbffad;
-  --accent-hover: #e9ffcc;
-  --accent-ink: #000000;
-  --accent-soft: rgb(219 255 173 / 0.1);
-  --accent-ring: rgb(219 255 173 / 0.25);
+  --accent: #15803d;
+  --accent-hover: #166534;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(21 128 61 / 0.08);
+  --accent-ring: rgb(17 17 17 / 0.12);
 
-  --success: #dbffad;
-  --success-soft: rgb(219 255 173 / 0.1);
-  --danger: #ff8a7a;
-  --danger-soft: rgb(255 138 122 / 0.1);
-  --warn: #ffd88a;
-  --warn-soft: rgb(255 216 138 / 0.1);
+  --success: #15803d;
+  --success-soft: rgb(21 128 61 / 0.08);
+  --danger: #c2410c;
+  --danger-soft: rgb(194 65 12 / 0.07);
+  --warn: #b45309;
+  --warn-soft: rgb(180 83 9 / 0.08);
 
-  --radius: 14px;
-  --radius-lg: 22px;
+  --ink: #0d0d0d;
+  --ink-2: #1a1a1a;
+  --ink-text: #f4f4f4;
+  --ink-muted: #a3a3a3;
+  --ink-border: #2a2a2a;
+
+  --radius: 12px;
+  --radius-lg: 18px;
   --pill: 999px;
 
   --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-serif), Georgia, "Times New Roman", serif;
   --font-editorial: var(--font-serif), Georgia, "Times New Roman", serif;
   --font-label: var(--font-mono), ui-monospace, monospace;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -64,14 +73,14 @@ body {
   color: var(--text);
   background: var(--bg);
   font-family: var(--font-body);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--ink);
+  color: var(--ink-text);
 }
 
 button,
@@ -85,9 +94,10 @@ button {
   cursor: pointer;
 }
 
+a:focus-visible,
 button:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--text);
   outline-offset: 2px;
 }
 

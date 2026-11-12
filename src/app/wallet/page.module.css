@@ -22,15 +22,17 @@
   align-items: center;
   gap: 12px;
   padding: 16px max(16px, calc((100% - 1080px) / 2));
-  background: rgb(0 0 0 / 0.8);
+  background: rgb(255 255 255 / 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
 
 .tagline {
-  font-family: var(--font-editorial);
-  font-size: 17px;
-  color: var(--text);
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .main {
@@ -68,24 +70,13 @@
 
 /* ---------- Brand ---------- */
 
-.logo {
-  font-weight: 500;
-  font-size: 18px;
-  letter-spacing: -0.03em;
-  text-transform: lowercase;
-}
-
 .diamond {
-  margin-right: 12px;
-  font-size: 0.6em;
-  vertical-align: 0.25em;
-  color: var(--silver);
+  display: none;
 }
 
 /* ---------- Chrome tiles (decorative hero visual) ---------- */
 
-.tiles,
-.tilesSmall {
+.tiles {
   position: absolute;
   right: 4%;
   top: 50%;
@@ -94,15 +85,6 @@
   translate: 0 -50%;
   perspective: 900px;
   pointer-events: none;
-}
-
-.tilesSmall {
-  position: relative;
-  right: auto;
-  top: auto;
-  translate: none;
-  width: 220px;
-  margin: 16px auto 0;
 }
 
 .tile {
@@ -146,101 +128,6 @@
   }
 }
 
-/* ---------- Login ---------- */
-
-.loginCard {
-  width: 100%;
-  max-width: 440px;
-  padding: 32px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.loginTitle {
-  margin-top: 12px;
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 46px;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
-  color: var(--silver);
-  text-align: center;
-}
-
-.loginSub {
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.sectionLabel {
-  margin-top: 28px;
-  margin-bottom: 4px;
-  font-family: var(--font-label);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.userList {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--border-strong);
-  margin-bottom: 12px;
-}
-
-.userTile {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 16px 4px;
-  border: 0;
-  border-bottom: 1px solid var(--border-strong);
-  background: transparent;
-  color: var(--text);
-  text-align: left;
-  transition: padding 0.2s, color 0.2s;
-}
-
-.userTile:hover:not(:disabled) {
-  padding-left: 12px;
-  color: var(--accent);
-}
-
-.userTile:hover:not(:disabled) .chevron {
-  color: var(--accent);
-  transform: translateX(4px);
-}
-
-.userTileText {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.userTileText strong {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.userTileText span {
-  font-size: 13px;
-  color: var(--muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.chevron {
-  color: var(--muted);
-  font-size: 20px;
-  transition: transform 0.2s, color 0.2s;
-}
-
 .avatar {
   flex: none;
   display: grid;
@@ -251,18 +138,9 @@
   border: 1px solid var(--border-strong);
   font-family: var(--font-display);
   font-size: 17px;
-  color: var(--text);
-  background: var(--surface-2);
-}
-
-.avatar[data-user="alice"] {
-  border-color: var(--accent);
-}
-.avatar[data-user="bob"] {
-  border-color: #9ad6ff;
-}
-.avatar[data-user="carol"] {
-  border-color: #ffc98a;
+  font-weight: 600;
+  color: var(--ink-text);
+  background: var(--ink);
 }
 
 /* ---------- Top bar user chip ---------- */
@@ -306,8 +184,10 @@
   flex-direction: column;
   justify-content: flex-end;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: radial-gradient(120% 140% at 80% 40%, #111 0%, #000 60%);
+  border: 1px solid var(--ink);
+  background: linear-gradient(150deg, #262626 0%, #0d0d0d 55%, #000 100%);
+  color: var(--ink-text);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.45);
 }
 
 .hero > *:not(.tiles) {
@@ -319,17 +199,17 @@
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-muted);
 }
 
 .heroAmount {
   margin-top: 10px;
   font-family: var(--font-display);
-  font-weight: 200;
-  font-size: clamp(52px, 11vw, 104px);
+  font-weight: 600;
+  font-size: clamp(48px, 10vw, 88px);
   line-height: 1;
-  letter-spacing: -0.05em;
-  color: var(--silver);
+  letter-spacing: -0.04em;
+  color: var(--ink-text);
   font-variant-numeric: tabular-nums;
 }
 
@@ -344,18 +224,18 @@
   min-width: 170px;
   padding-right: 32px;
   padding-top: 12px;
-  border-top: 1px solid var(--border-strong);
+  border-top: 1px solid var(--ink-border);
 }
 
 .heroStatLabel {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--ink-muted);
 }
 
 .heroStatValue {
   margin-top: 4px;
   font-size: 24px;
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
 }
@@ -365,6 +245,7 @@
 .card {
   min-width: 0;
   background: var(--surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 24px;
@@ -378,16 +259,16 @@
 }
 
 .cardHeader h2 {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 30px;
-  letter-spacing: -0.04em;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
 }
 
 .count {
   font-size: 12px;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  color: var(--warn);
+  border: 1px solid var(--warn);
   padding: 3px 10px;
   border-radius: var(--pill);
 }
@@ -395,8 +276,7 @@
 .empty {
   padding: 28px 0 12px;
   text-align: center;
-  font-family: var(--font-editorial);
-  font-size: 17px;
+  font-size: 15px;
   color: var(--muted);
 }
 
@@ -430,7 +310,7 @@
 .tab[aria-selected="true"] {
   background: var(--silver);
   border-color: var(--silver);
-  color: var(--bg);
+  color: var(--silver-ink);
 }
 
 /* ---------- Forms ---------- */
@@ -442,10 +322,9 @@
 }
 
 .formHint {
-  font-family: var(--font-editorial);
-  font-size: 18px;
-  line-height: 1.35;
-  color: var(--text);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
 .field {
@@ -490,12 +369,12 @@
 .input:focus,
 .amountInput:focus-within {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--text);
   box-shadow: 0 0 0 3px var(--accent-ring);
 }
 
 .input option {
-  background: var(--surface-2);
+  background: var(--bg);
 }
 
 .amountInput {
@@ -517,9 +396,9 @@
   background: transparent;
   color: inherit;
   font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   outline: none;
 }
@@ -552,8 +431,7 @@
 }
 
 .chip:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--text);
 }
 
 .breakdown {
@@ -599,11 +477,9 @@
   border: 0;
   border-radius: 10px;
   background: var(--silver);
-  color: #000;
-  font-size: 13px;
+  color: var(--silver-ink);
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   transition: background 0.15s, opacity 0.15s, transform 0.15s;
 }
 
@@ -645,7 +521,7 @@
 .smallPrimary {
   border: 1px solid var(--silver);
   background: var(--silver);
-  color: #000;
+  color: var(--silver-ink);
 }
 
 .smallSecondary {
@@ -724,6 +600,7 @@ button:disabled {
 .badge[data-status="held"] {
   border-color: var(--warn);
   color: var(--warn);
+  background: var(--warn-soft);
 }
 
 .badge[data-status="released"] {
@@ -737,12 +614,14 @@ button:disabled {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
   font-size: 15px;
 }
 
 .txIcon[data-dir="in"] {
-  border-color: var(--accent);
+  border-color: transparent;
+  background: var(--accent-soft);
   color: var(--accent);
 }
 
@@ -752,8 +631,8 @@ button:disabled {
 
 .txAmount {
   font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 17px;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
@@ -770,7 +649,7 @@ button:disabled {
   justify-content: space-between;
   gap: 12px;
   padding: 12px 18px;
-  border-radius: var(--pill);
+  border-radius: var(--radius);
   font-size: 14px;
   border: 1px solid transparent;
 }
@@ -803,7 +682,7 @@ button:disabled {
   height: 28px;
   border-radius: 50%;
   border: 2px solid var(--border-strong);
-  border-top-color: var(--accent);
+  border-top-color: var(--text);
   animation: spin 0.8s linear infinite;
 }
 

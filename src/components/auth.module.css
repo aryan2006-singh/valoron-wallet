@@ -1,0 +1,281 @@
+.split {
+  flex: 1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* ---------- Dark panel ---------- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 36px 48px;
+  background: var(--ink);
+  color: var(--ink-text);
+}
+
+.panelBody {
+  max-width: 460px;
+}
+
+.panelTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.points {
+  margin-top: 32px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.points li {
+  display: flex;
+  gap: 14px;
+}
+
+.points div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.points strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.points span {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.pointIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-border);
+  color: var(--ink-text) !important;
+  font-size: 13px !important;
+}
+
+.panelFoot {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+/* ---------- Form side ---------- */
+
+.formSide {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 72px 24px 48px;
+}
+
+.back {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.back:hover {
+  color: var(--text);
+}
+
+.formBox {
+  width: 100%;
+  max-width: 380px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.field input {
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--text);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.submit {
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--ink-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--silver-hover);
+}
+
+.submit:disabled,
+.demo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.divider {
+  margin: 28px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.demoList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.demo:hover:not(:disabled) {
+  border-color: var(--text);
+  background: var(--surface-2);
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--ink-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.demoText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.demoText strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.demoText span {
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.switch {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.switch a {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel {
+    padding: 24px 16px;
+  }
+  .panelBody,
+  .panelFoot {
+    display: none;
+  }
+  .back {
+    left: 16px;
+    top: 20px;
+  }
+}
