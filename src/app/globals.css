@@ -1,60 +1,37 @@
+/*
+ * Valoron design tokens. One dark theme: a black canvas, white type,
+ * a single lime accent, hairline borders and pill-shaped controls.
+ */
 :root {
-  --bg: #f4f5fa;
-  --surface: #ffffff;
-  --surface-2: #f1f2f7;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e6e8f0;
-  --border-strong: #d4d7e2;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface-2: #141414;
+  --text: #ffffff;
+  --muted: #8a8a8a;
+  --border: #1f1f1f;
+  --border-strong: #333333;
 
-  --brand: #4f46e5;
-  --brand-hover: #4338ca;
-  --brand-soft: #eef2ff;
-  --brand-ring: rgb(79 70 229 / 0.2);
-  --brand-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --accent: #dbffad;
+  --accent-hover: #e9ffcc;
+  --accent-ink: #000000;
+  --accent-soft: rgb(219 255 173 / 0.1);
+  --accent-ring: rgb(219 255 173 / 0.25);
 
-  --success: #047857;
-  --success-soft: #ecfdf5;
-  --danger: #dc2626;
-  --danger-soft: #fef2f2;
-  --warn: #b45309;
-  --warn-soft: #fffbeb;
+  --success: #dbffad;
+  --success-soft: rgb(219 255 173 / 0.1);
+  --danger: #ff8a7a;
+  --danger-soft: rgb(255 138 122 / 0.1);
+  --warn: #ffd88a;
+  --warn-soft: rgb(255 216 138 / 0.1);
 
-  --radius: 12px;
-  --radius-lg: 18px;
-  --shadow: 0 1px 2px rgb(15 23 42 / 0.05);
-  --shadow-lg: 0 24px 48px -24px rgb(15 23 42 / 0.25);
-}
+  --radius: 14px;
+  --radius-lg: 22px;
+  --pill: 999px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b0d14;
-    --surface: #141722;
-    --surface-2: #1c2030;
-    --text: #e8eaf2;
-    --muted: #949bb0;
-    --border: #242838;
-    --border-strong: #313649;
+  --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
 
-    --brand: #6d66f2;
-    --brand-hover: #7f79f5;
-    --brand-soft: rgb(109 102 242 / 0.14);
-    --brand-ring: rgb(109 102 242 / 0.3);
-
-    --success: #34d399;
-    --success-soft: rgb(52 211 153 / 0.12);
-    --danger: #f87171;
-    --danger-soft: rgb(248 113 113 / 0.12);
-    --warn: #fbbf24;
-    --warn-soft: rgb(251 191 36 / 0.12);
-
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
-    --shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 0.6);
-  }
-
-  html {
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 * {
@@ -79,15 +56,22 @@ body {
   flex-direction: column;
   color: var(--text);
   background: var(--bg);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 button,
 input,
 select {
   font: inherit;
+  letter-spacing: inherit;
 }
 
 button {
@@ -96,11 +80,20 @@ button {
 
 button:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--brand);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

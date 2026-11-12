@@ -292,7 +292,8 @@ export default function Home() {
       <main className={styles.center}>
         <div className={styles.loginCard}>
           <Logo />
-          <h1 className={styles.loginTitle}>Welcome to Valoron</h1>
+          <div className={styles.orbSmall} aria-hidden />
+          <h1 className={styles.loginTitle}>Money, moved simply.</h1>
           <p className={styles.loginSub}>A demo wallet for deposits, support payments, escrow and withdrawals.</p>
           <p className={styles.sectionLabel}>Choose a demo account</p>
           <div className={styles.userList}>
@@ -332,6 +333,7 @@ export default function Home() {
     <div className={styles.shell}>
       <header className={styles.topbar}>
         <Logo />
+        <span className={styles.tagline}>A wallet for small payments</span>
         <div className={styles.userChip}>
           <span className={styles.avatar} data-user={userFor(userId)?.name.toLowerCase()}>
             {initials(email ?? "?")}
@@ -345,6 +347,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <section className={styles.hero} aria-label="Balances">
+          <div className={styles.orb} aria-hidden />
           <p className={styles.heroLabel}>Available balance</p>
           <p className={styles.heroAmount}>{formatRupees(available)}</p>
           <div className={styles.heroStats}>
@@ -562,12 +565,7 @@ export default function Home() {
 
 function Logo() {
   return (
-    <span className={styles.logo}>
-      <span className={styles.logoMark} aria-hidden>
-        V
-      </span>
-      Valoron
-    </span>
+    <span className={styles.logo}>valoron</span>
   );
 }
 
