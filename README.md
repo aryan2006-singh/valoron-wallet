@@ -36,7 +36,7 @@ Run the app:
 npm run dev
 ```
 
-Open `https://valoron-wallet.onrender.com`, log in as any demo user, and use Deposit / Send / Withdraw / Escrow. Deposits go through a real intent → signed-webhook round trip; the "pay now" step is simulated by `/api/dev/simulate-provider`, which server-side constructs and HMAC-signs the same webhook payload a real gateway would send, then posts it to the real `/api/webhooks/payment` verification path. The webhook secrets never reach the browser.
+Open `http://localhost:3000` (or the deployed demo at `https://valoron-wallet.onrender.com`), log in as any demo user, and use Deposit / Send / Withdraw / Escrow. Deposits go through a real intent → signed-webhook round trip; the "pay now" step is simulated by `/api/dev/simulate-provider`, which server-side constructs and HMAC-signs the same webhook payload a real gateway would send, then posts it to the real `/api/webhooks/payment` verification path. The webhook secrets never reach the browser.
 
 ## Webhook / concurrency proof script
 
@@ -44,7 +44,7 @@ Open `https://valoron-wallet.onrender.com`, log in as any demo user, and use Dep
 node scripts/prove-it.mjs
 ```
 
-Requires `supabase start` and `npm run dev` both running. Fires the 8 required scenarios against the live stack (tests 1–5 hit `/api/webhooks/payment` over real HTTP; tests 6–8 call the Postgres RPCs directly with a real logged-in user's JWT, to exercise the actual RLS/ownership/grant enforcement without needing to simulate a browser cookie session from a script).
+Requires `supabase start` and `npm run dev` both running. Fires the 8 required scenarios plus 7 regression tests (#9–15) against the live stack (tests 1–5 and 9–10 hit `/api/webhooks/payment` over real HTTP; the rest call the Postgres RPCs directly with a real logged-in user's JWT, to exercise the actual RLS/ownership/grant enforcement without needing to simulate a browser cookie session from a script).
 
 Actual output from a real run against this repo:
 
@@ -80,6 +80,8 @@ Created test users prove-it-1785781816479@valoron.test and prove-it-recipient-17
 
 === 8 passed, 0 failed ===
 ```
+
+Tests #9–15 were added in the backend hardening pass (`supabase/migrations/20261112170000_harden_money_functions.sql`): an already-paid intent can't be credited again under a new `payment_id`, a signed webhook whose amount disagrees with the intent is rejected, idempotency keys are scoped per user and reject reuse with different parameters, 1-paise sends work, the rate limiter holds under parallel requests, and `check_ledger_integrity()` reports no drift. Current run: `15 passed, 0 failed`.
 
 ## What's done vs. not, honestly
 

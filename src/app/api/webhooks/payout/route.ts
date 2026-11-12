@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
-import { getClientIp, logAttempt, mapPostgresError } from "@/lib/api-helpers";
+import { getClientIp, getWebhookSecret, isUuid, logAttempt, mapPostgresError } from "@/lib/api-helpers";
 import { isWithinReplayWindow, verifySignature } from "@/lib/webhook-verify";
 
 // Public endpoint, signature-authenticated, same as /api/webhooks/payment.
@@ -15,7 +15,10 @@ export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rawBody = await request.text();
   const signature = request.headers.get("x-signature");
-  const secret = process.env.PAYOUT_WEBHOOK_SECRET!;
+  const secret = getWebhookSecret("PAYOUT_WEBHOOK_SECRET");
+  if (!secret) {
+    return NextResponse.json({ code: "MISCONFIGURED" }, { status: 500 });
+  }
 
   if (!verifySignature(rawBody, signature, secret)) {
     await logAttempt({ actorId: null, action: "webhook_payout", ip, result: "rejected", detail: { reason: "bad_signature" } });
@@ -37,8 +40,10 @@ export async function POST(request: Request) {
 
   if (
     (event !== "payout.settled" && event !== "payout.failed") ||
-    typeof request_id !== "string" ||
+    !isUuid(request_id) ||
     typeof payout_id !== "string" ||
+    payout_id.length === 0 ||
+    payout_id.length > 200 ||
     typeof timestamp !== "number"
   ) {
     await logAttempt({ actorId: null, action: "webhook_payout", ip, result: "rejected", detail: { reason: "bad_shape" } });
@@ -57,7 +62,7 @@ export async function POST(request: Request) {
     ? { p_request_id: request_id, p_idempotency_key: payout_id }
     : {
         p_request_id: request_id,
-        p_reason: typeof reason === "string" ? reason : "unspecified",
+        p_reason: typeof reason === "string" ? reason.slice(0, 500) : "unspecified",
         p_idempotency_key: payout_id,
       };
 

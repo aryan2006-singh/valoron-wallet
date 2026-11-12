@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
-import { getClientIp, logAttempt, mapPostgresError } from "@/lib/api-helpers";
+import { getClientIp, getWebhookSecret, isUuid, logAttempt, mapPostgresError } from "@/lib/api-helpers";
 import { isWithinReplayWindow, verifySignature } from "@/lib/webhook-verify";
 
 // Public endpoint -- no session, no auth header. The HMAC signature IS the
@@ -16,7 +16,10 @@ export async function POST(request: Request) {
   // verification" shortcuts.
   const rawBody = await request.text();
   const signature = request.headers.get("x-signature");
-  const secret = process.env.PAYMENT_WEBHOOK_SECRET!;
+  const secret = getWebhookSecret("PAYMENT_WEBHOOK_SECRET");
+  if (!secret) {
+    return NextResponse.json({ code: "MISCONFIGURED" }, { status: 500 });
+  }
 
   if (!verifySignature(rawBody, signature, secret)) {
     await logAttempt({
@@ -47,7 +50,9 @@ export async function POST(request: Request) {
   if (
     event !== "payment.captured" ||
     typeof payment_id !== "string" ||
-    typeof intent_id !== "string" ||
+    payment_id.length === 0 ||
+    payment_id.length > 200 ||
+    !isUuid(intent_id) ||
     typeof amount_paise !== "number" ||
     typeof timestamp !== "number"
   ) {
@@ -82,14 +87,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ code: "NOT_FOUND" }, { status: 404 });
   }
 
-  // Credit using OUR stored intent amount, not whatever the payload claims --
-  // a validly signed webhook can still only move the amount we ourselves
-  // recorded when the user started this deposit.
+  // We always credit OUR stored intent amount, never the payload's. But a
+  // validly signed webhook that disagrees with what we recorded means
+  // something is wrong upstream -- reject it loudly rather than paper over it.
+  if (amount_paise !== intent.amount_paise) {
+    await logAttempt({
+      actorId: intent.user_id,
+      action: "webhook_payment",
+      targetId: intent_id,
+      ip,
+      result: "rejected",
+      detail: { reason: "amount_mismatch", expected: intent.amount_paise, received: amount_paise },
+    });
+    return NextResponse.json({ code: "AMOUNT_MISMATCH" }, { status: 400 });
+  }
+
+  // credit_deposit locks the intent, refuses to credit an intent that is
+  // already completed, and marks it completed in the same transaction as
+  // the ledger write -- so one intent can never be credited twice, even
+  // with different payment_ids.
   const { data: transactionId, error } = await service.rpc("credit_deposit", {
-    p_user_id: intent.user_id,
-    p_amount_paise: intent.amount_paise,
+    p_intent_id: intent.id,
     p_provider_payment_id: payment_id,
-    p_idempotency_key: payment_id, // idempotent on payment_id, per spec 4.3
   });
 
   if (error) {
@@ -100,12 +119,10 @@ export async function POST(request: Request) {
       targetId: intent_id,
       ip,
       result: "rejected",
-      detail: { code: mapped.code },
+      detail: { code: mapped.code, payment_id },
     });
     return NextResponse.json({ code: mapped.code }, { status: mapped.status });
   }
-
-  await service.from("payment_intents").update({ status: "completed" }).eq("id", intent_id);
 
   await logAttempt({
     actorId: intent.user_id,

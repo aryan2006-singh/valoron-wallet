@@ -1,67 +1,28 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import {
-  getClientIp,
-  hasOnlyAllowedKeys,
-  isNonEmptyString,
-  isUuid,
-  logAttempt,
-  mapPostgresError,
-  parseAmountPaise,
-} from "@/lib/api-helpers";
+import { isNonEmptyString, isUuid, jsonError, parseAmountPaise, readJsonObject, requireUser, runUserRpc } from "@/lib/api-helpers";
 
 export async function POST(request: Request) {
-  const ip = getClientIp(request);
-  const supabase = await createClient();
+  const auth = await requireUser();
+  if (!auth.ok) return auth.response;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ code: "UNAUTHENTICATED" }, { status: 401 });
+  const body = await readJsonObject(request, ["recipientId", "amountPaise", "idempotencyKey"]);
+  const amount = parseAmountPaise(body?.amountPaise);
+  if (!body || !isUuid(body.recipientId) || amount === null || !isNonEmptyString(body.idempotencyKey, 200)) {
+    return jsonError("INVALID_INPUT", 400);
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ code: "INVALID_INPUT" }, { status: 400 });
-  }
-
-  if (
-    typeof body !== "object" ||
-    body === null ||
-    !hasOnlyAllowedKeys(body as Record<string, unknown>, ["recipientId", "amountPaise", "idempotencyKey"])
-  ) {
-    return NextResponse.json({ code: "INVALID_INPUT" }, { status: 400 });
-  }
-
-  const { recipientId, amountPaise, idempotencyKey } = body as Record<string, unknown>;
-  const amount = parseAmountPaise(amountPaise);
-
-  if (!isUuid(recipientId) || amount === null || !isNonEmptyString(idempotencyKey, 200)) {
-    return NextResponse.json({ code: "INVALID_INPUT" }, { status: 400 });
-  }
-
-  const { data, error } = await supabase.rpc("send_support", {
-    p_sender_id: user.id,
-    p_recipient_id: recipientId,
-    p_amount_paise: amount,
-    p_idempotency_key: idempotencyKey,
+  return runUserRpc({
+    request,
+    supabase: auth.supabase,
+    userId: auth.user.id,
+    rpc: "send_support",
+    args: {
+      p_sender_id: auth.user.id,
+      p_recipient_id: body.recipientId,
+      p_amount_paise: amount,
+      p_idempotency_key: body.idempotencyKey,
+    },
+    targetId: body.recipientId,
+    auditDetail: { amountPaise: amount },
+    respond: (data) => ({ transactionId: data }),
   });
-
-  if (error) {
-    const mapped = mapPostgresError(error);
-    await logAttempt({
-      actorId: user.id,
-      action: "send_support",
-      targetId: recipientId,
-      ip,
-      result: "rejected",
-      detail: { amountPaise: amount, code: mapped.code },
-    });
-    return NextResponse.json({ code: mapped.code }, { status: mapped.status });
-  }
-
-  return NextResponse.json({ transactionId: data });
 }
